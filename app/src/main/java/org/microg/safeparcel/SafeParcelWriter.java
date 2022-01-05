@@ -13,7 +13,7 @@ import android.os.Parcelable;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("MagicNumber")
+@SuppressWarnings({"MagicNumber", "AutoUnboxing"})
 public final class SafeParcelWriter {
 
     private SafeParcelWriter() {

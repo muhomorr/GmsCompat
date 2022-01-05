@@ -13,7 +13,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@SuppressWarnings("MagicNumber")
+@SuppressWarnings({"MagicNumber", "AutoBoxing"})
 public final class SafeParcelReader {
 
     private SafeParcelReader() {
@@ -47,11 +47,6 @@ public final class SafeParcelReader {
         int i = readSize(parcel, header);
         if (i != expectedSize)
             throw new ReadException("Expected size " + expectedSize + " got " + i + " (0x" + Integer.toHexString(i) + ")", parcel);
-    }
-
-    @Deprecated
-    public static int readStart(Parcel parcel) {
-        return readObjectHeader(parcel);
     }
 
     public static int readObjectHeader(Parcel parcel) {

@@ -33,7 +33,6 @@ public abstract class AutoSafeParcelable implements SafeParcelable {
             return SafeParcelUtil.createObject(tClass, parcel);
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public T[] newArray(int i) {
             return (T[]) Array.newInstance(tClass, i);

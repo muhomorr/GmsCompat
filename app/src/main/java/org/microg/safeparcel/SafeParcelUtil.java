@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("AutoBoxing")
 public final class SafeParcelUtil {
     private static final String TAG = "SafeParcel";
 
@@ -88,7 +89,7 @@ public final class SafeParcelUtil {
             int fieldId = SafeParcelReader.getFieldId(header);
             Field field = fieldMap.get(fieldId);
             if (field == null) {
-                Log.d(TAG, String.format("Unknown field id %d in %s, skipping.", fieldId, clazz.getName()));
+//                Log.d(TAG, String.format("Unknown field id %d in %s, skipping.", fieldId, clazz.getName()));
                 SafeParcelReader.skip(parcel, header);
             } else {
                 try {
@@ -115,6 +116,7 @@ public final class SafeParcelUtil {
         throw new RuntimeException(clazz + " is not an Parcelable");
     }
 
+    @SuppressWarnings("unchecked")
     private static Parcelable.Creator<Parcelable> getCreator(Class clazz) {
         try {
             Field creatorField = clazz.getDeclaredField("CREATOR");
@@ -127,29 +129,18 @@ public final class SafeParcelUtil {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static Class getSubClass(Field field) {
-        SafeParceled safeParceled = field.getAnnotation(SafeParceled.class);
         SafeParcelable.Field safeParcelableField = field.getAnnotation(SafeParcelable.Field.class);
-        if (safeParceled != null && safeParceled.subClass() != SafeParceled.class) {
-            return safeParceled.subClass();
-        } else if (safeParceled != null && !"undefined".equals(safeParceled.subType())) {
-            try {
-                return Class.forName(safeParceled.subType());
-            } catch (ClassNotFoundException e) {
-                throw new IllegalArgumentException(e);
-            }
-        } else if (safeParcelableField != null && safeParcelableField.subClass() != SafeParcelable.class) {
+        if (safeParcelableField != null && safeParcelableField.subClass() != SafeParcelable.class) {
             return safeParcelableField.subClass();
         } else {
             return null;
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static Class getListItemClass(Field field) {
         Class subClass = getSubClass(field);
-        if (subClass != null || field.isAnnotationPresent(SafeParceled.class)) return subClass;
+        if (subClass != null) return subClass;
         Type type = field.getGenericType();
         if (type instanceof ParameterizedType) {
             ParameterizedType pt = (ParameterizedType) type;
@@ -165,48 +156,35 @@ public final class SafeParcelUtil {
         return clazz == null || clazz.getClassLoader() == null ? ClassLoader.getSystemClassLoader() : clazz.getClassLoader();
     }
 
-    @SuppressWarnings("deprecation")
     private static boolean useValueParcel(Field field) {
-        SafeParceled safeParceled = field.getAnnotation(SafeParceled.class);
         SafeParcelable.Field safeParcelableField = field.getAnnotation(SafeParcelable.Field.class);
-        if (safeParceled != null) {
-            return safeParceled.useClassLoader();
-        } else if (safeParcelableField != null) {
+        if (safeParcelableField != null) {
             return safeParcelableField.useValueParcel();
         } else {
             throw new IllegalStateException();
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static int getFieldId(Field field) {
-        SafeParceled safeParceled = field.getAnnotation(SafeParceled.class);
         SafeParcelable.Field safeParcelableField = field.getAnnotation(SafeParcelable.Field.class);
-        if (safeParceled != null) {
-            return safeParceled.value();
-        } else if (safeParcelableField != null) {
+        if (safeParcelableField != null) {
             return safeParcelableField.value();
         } else {
             throw new IllegalStateException();
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static boolean getMayNull(Field field) {
-        SafeParceled safeParceled = field.getAnnotation(SafeParceled.class);
         SafeParcelable.Field safeParcelableField = field.getAnnotation(SafeParcelable.Field.class);
-        if (safeParceled != null) {
-            return safeParceled.mayNull();
-        } else if (safeParcelableField != null) {
+        if (safeParcelableField != null) {
             return safeParcelableField.mayNull();
         } else {
             throw new IllegalStateException();
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static boolean isSafeParceledField(Field field) {
-        return field.isAnnotationPresent(SafeParceled.class) || field.isAnnotationPresent(SafeParcelable.Field.class);
+        return field.isAnnotationPresent(SafeParcelable.Field.class);
     }
 
     private static boolean useDirectList(Field field) {
