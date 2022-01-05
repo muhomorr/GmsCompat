@@ -20,48 +20,21 @@ import android.app.PendingIntent;
 
 import com.google.android.gms.location.ILocationCallback;
 import com.google.android.gms.location.ILocationListener;
-import com.google.android.gms.location.internal.IFusedLocationProviderCallback;
 
 import org.microg.safeparcel.AutoSafeParcelable;
-import org.microg.safeparcel.SafeParceled;
 
 public class LocationRequestUpdateData extends AutoSafeParcelable {
 
-    public static final int REQUEST_UPDATES = 1;
-    public static final int REMOVE_UPDATES = 2;
+    public static final int OP_REQUEST_UPDATES = 1;
+    public static final int OP_REMOVE_UPDATES = 2;
 
-    @SafeParceled(1000)
-    private int versionCode;
+    @Field(1) public int opCode;
+    @Field(2) public LocationRequestInternal request;
+    @Field(3) public ILocationListener listener;
+    @Field(4) public PendingIntent pendingIntent;
+    @Field(5) public ILocationCallback callback;
+    @Field(6) public IFusedLocationProviderCallback fusedLocationProviderCallback;
+    @Field(8) public String appOpsReasonMessage;
 
-    @SafeParceled(1)
-    public int opCode;
-
-    @SafeParceled(2)
-    public LocationRequestInternal request;
-
-    @SafeParceled(3)
-    public ILocationListener listener;
-
-    @SafeParceled(4)
-    public PendingIntent pendingIntent;
-
-    @SafeParceled(5)
-    public ILocationCallback callback;
-
-    @SafeParceled(6)
-    public IFusedLocationProviderCallback fusedLocationProviderCallback;
-
-    @Override
-    public String toString() {
-        return "LocationRequestUpdateData{" +
-                "opCode=" + opCode +
-                ", request=" + request +
-                ", listener=" + (listener != null ? listener.asBinder() : null) +
-                ", pendingIntent=" + pendingIntent +
-                ", callback=" + (callback != null ? callback.asBinder() : null) +
-                ", fusedLocationProviderCallback=" + (fusedLocationProviderCallback != null ? fusedLocationProviderCallback.asBinder() : null) +
-                '}';
-    }
-
-    public static final Creator<LocationRequestUpdateData> CREATOR = new AutoCreator<LocationRequestUpdateData>(LocationRequestUpdateData.class);
+    public static final Creator<LocationRequestUpdateData> CREATOR = new AutoCreator<>(LocationRequestUpdateData.class);
 }

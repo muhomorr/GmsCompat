@@ -16,25 +16,20 @@
 
 package com.google.android.gms.location.internal;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Status;
 
 import org.microg.safeparcel.AutoSafeParcelable;
-import org.microg.safeparcel.SafeParceled;
 
 public class FusedLocationProviderResult extends AutoSafeParcelable {
-    public static final FusedLocationProviderResult SUCCESS = FusedLocationProviderResult.create(Status.SUCCESS);
+    public static final FusedLocationProviderResult SUCCESS = new FusedLocationProviderResult(Status.SUCCESS);
+    public static final FusedLocationProviderResult ERROR = new FusedLocationProviderResult(new Status(CommonStatusCodes.ERROR));
 
-    @SafeParceled(1000)
-    private int versionCode = 1;
+    @Field(1) public Status status;
 
-    @SafeParceled(1)
-    public Status status;
-
-    public static FusedLocationProviderResult create(Status status) {
-        FusedLocationProviderResult result = new FusedLocationProviderResult();
-        result.status = status;
-        return result;
+    public FusedLocationProviderResult(Status status) {
+        this.status = status;
     }
 
-    public static final Creator<FusedLocationProviderResult> CREATOR = new AutoCreator<FusedLocationProviderResult>(FusedLocationProviderResult.class);
+    public static final Creator<FusedLocationProviderResult> CREATOR = new AutoCreator<>(FusedLocationProviderResult.class);
 }

@@ -16,77 +16,16 @@
 
 package com.google.android.gms.location;
 
-import org.microg.gms.common.PublicApi;
 import org.microg.safeparcel.AutoSafeParcelable;
-import org.microg.safeparcel.SafeParceled;
 
-/**
- * Stores the current states of all location-related settings.
- */
-@PublicApi
+// https://developers.google.com/android/reference/com/google/android/gms/location/LocationSettingsStates
 public class LocationSettingsStates extends AutoSafeParcelable {
+    @Field(1) public boolean gpsUsable;
+    @Field(2) public boolean networkLocationUsable;
+    @Field(3) public boolean bleUsable;
+    @Field(4) public boolean gpsPresent;
+    @Field(5) public boolean networkLocationPresent;
+    @Field(6) public boolean blePresent;
 
-    @SafeParceled(1000)
-    private int versionCode = 2;
-
-    @SafeParceled(1)
-    private boolean gpsUsable;
-
-    @SafeParceled(2)
-    private boolean networkLocationUsable;
-
-    @SafeParceled(3)
-    private boolean bleUsable;
-
-    @SafeParceled(4)
-    private boolean gpsPresent;
-
-    @SafeParceled(5)
-    private boolean networkLocationPresent;
-
-    @SafeParceled(6)
-    private boolean blePresent;
-
-    public boolean isBlePresent() {
-        return blePresent;
-    }
-
-    public boolean isBleUsable() {
-        return bleUsable;
-    }
-
-    public boolean isGpsPresent() {
-        return gpsPresent;
-    }
-
-    public boolean isGpsUsable() {
-        return gpsUsable;
-    }
-
-    public boolean isLocationPresent() {
-        return isGpsPresent() || isNetworkLocationPresent();
-    }
-
-    public boolean isLocationUsable() {
-        return isGpsUsable() || isNetworkLocationUsable();
-    }
-
-    public boolean isNetworkLocationPresent() {
-        return networkLocationPresent;
-    }
-
-    public boolean isNetworkLocationUsable() {
-        return networkLocationUsable;
-    }
-
-    public LocationSettingsStates(boolean gpsUsable, boolean networkLocationUsable, boolean bleUsable, boolean gpsPresent, boolean networkLocationPresent, boolean blePresent) {
-        this.gpsUsable = gpsUsable;
-        this.networkLocationUsable = networkLocationUsable;
-        this.bleUsable = bleUsable;
-        this.gpsPresent = gpsPresent;
-        this.networkLocationPresent = networkLocationPresent;
-        this.blePresent = blePresent;
-    }
-
-    public static final Creator<LocationSettingsStates> CREATOR = new AutoCreator<LocationSettingsStates>(LocationSettingsStates.class);
+    public static final Creator<LocationSettingsStates> CREATOR = new AutoCreator<>(LocationSettingsStates.class);
 }

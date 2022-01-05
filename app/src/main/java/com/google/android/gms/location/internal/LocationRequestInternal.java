@@ -19,60 +19,26 @@ package com.google.android.gms.location.internal;
 import com.google.android.gms.location.LocationRequest;
 
 import org.microg.safeparcel.AutoSafeParcelable;
-import org.microg.safeparcel.SafeParceled;
-
-import java.util.List;
 
 public class LocationRequestInternal extends AutoSafeParcelable {
+    @Field(1) public LocationRequest request;
 
-    @SafeParceled(1000)
-    private int versionCode = 1;
+    /*
+    these fields are never set by the recent GMS client versions
 
-    @SafeParceled(1)
-    public LocationRequest request;
-
-    @SafeParceled(2)
-    public boolean requestNlpDebugInfo;
-
-    @SafeParceled(3)
-    public boolean restorePendingIntentListeners;
-
-    @SafeParceled(4)
-    public boolean triggerUpdate;
-
-    @SafeParceled(value = 5, subClass = ClientIdentity.class)
+    @Field(value = 5, subClass = ClientIdentity.class)
     public List<ClientIdentity> clients;
+    @Field(6)  public String tag;
+    @Field(7)  public boolean hideAppOps;
+    @Field(8)  public boolean forceCoarseLocation;
+    @Field(9)  public boolean exemptFromBackgroundThrottle;
+    @Field(10) public String moduleId;
+    @Field(11) public boolean locationSettingsIgnored;
+     */
 
-    @SafeParceled(6)
-    public String tag;
+    @Field(12) public boolean inaccurateLocationsDelayed;
+    @Field(13) public String contextAttributionTag;
+    @Field(14) public long maxLocationAgeMillis;
 
-    @SafeParceled(7)
-    public boolean hideFromAppOps;
-
-    @SafeParceled(8)
-    public boolean forceCoarseLocation;
-
-    @SafeParceled(9)
-    public boolean exemptFromThrottle;
-
-    @SafeParceled(10)
-    public String moduleId;
-
-    @Override
-    public String toString() {
-        return "LocationRequestInternal{" +
-                "request=" + request +
-                ", requestNlpDebugInfo=" + requestNlpDebugInfo +
-                ", restorePendingIntentListeners=" + restorePendingIntentListeners +
-                ", triggerUpdate=" + triggerUpdate +
-                ", clients=" + clients +
-                ", tag='" + tag + '\'' +
-                ", hideFromAppOps=" + hideFromAppOps +
-                ", forceCoarseLocation=" + forceCoarseLocation +
-                ", exemptFromThrottle=" + exemptFromThrottle +
-                ", moduleId=" + moduleId +
-                '}';
-    }
-
-    public static final Creator<LocationRequestInternal> CREATOR = new AutoCreator<LocationRequestInternal>(LocationRequestInternal.class);
+    public static final Creator<LocationRequestInternal> CREATOR = new AutoCreator<>(LocationRequestInternal.class);
 }

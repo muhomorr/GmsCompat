@@ -18,28 +18,18 @@ package com.google.android.gms.location;
 
 import android.location.Location;
 
-import org.microg.gms.common.PublicApi;
 import org.microg.safeparcel.AutoSafeParcelable;
-import org.microg.safeparcel.SafeParceled;
 
 import java.util.List;
 
-@PublicApi
+// https://developers.google.com/android/reference/com/google/android/gms/location/LocationResult
 public class LocationResult extends AutoSafeParcelable {
-
-    @SafeParceled(1000)
-    private int versionCode = 2;
-
-    @SafeParceled(value = 1, subClass = Location.class)
+    @Field(value = 1, subClass = Location.class)
     public final List<Location> locations;
 
-    private LocationResult(List<Location> locations) {
+    public LocationResult(List<Location> locations) {
         this.locations = locations;
     }
 
-    public static LocationResult create(List<Location> locations) {
-        return new LocationResult(locations);
-    }
-
-    public static final Creator<LocationResult> CREATOR = new AutoCreator<LocationResult>(LocationResult.class);
+    public static final Creator<LocationResult> CREATOR = new AutoCreator<>(LocationResult.class);
 }

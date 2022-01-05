@@ -19,54 +19,22 @@ package com.google.android.gms.location;
 import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.Status;
 
-import org.microg.gms.common.PublicApi;
 import org.microg.safeparcel.AutoSafeParcelable;
-import org.microg.safeparcel.SafeParceled;
 
-/**
- * Result of checking settings via checkLocationSettings(GoogleApiClient, LocationSettingsRequest),
- * indicates whether a dialog should be shown to ask the user's consent to change their settings.
- * The method getStatus() can be be used to confirm if the request was successful. If the current
- * location settings don't satisfy the app's requirements and the user has permission to change the
- * settings, the app could use startResolutionForResult(Activity, int) to start an intent to show a
- * dialog, asking for user's consent to change the settings. The current location settings states
- * can be accessed via getLocationSettingsStates(). See LocationSettingsResult for more details.
- */
-@PublicApi
+// https://developers.google.com/android/reference/com/google/android/gms/location/LocationSettingsResult
 public class LocationSettingsResult extends AutoSafeParcelable implements Result {
-
-    @SafeParceled(1000)
-    private int versionCode = 1;
-
-    @SafeParceled(1)
-    private Status status;
-
-    @SafeParceled(2)
-    private LocationSettingsStates settings;
-
-
-    /**
-     * Retrieves the location settings states.
-     */
-    public LocationSettingsStates getLocationSettingsStates() {
-        return settings;
-    }
+    @Field(1) public Status status;
+    @Field(2) public LocationSettingsStates settings;
 
     @Override
     public Status getStatus() {
         return status;
     }
 
-    @PublicApi(exclude = true)
     public LocationSettingsResult(LocationSettingsStates settings, Status status) {
         this.settings = settings;
         this.status = status;
     }
 
-    @PublicApi(exclude = true)
-    public LocationSettingsResult(Status status) {
-        this.status = status;
-    }
-
-    public static final Creator<LocationSettingsResult> CREATOR = new AutoCreator<LocationSettingsResult>(LocationSettingsResult.class);
+    public static final Creator<LocationSettingsResult> CREATOR = new AutoCreator<>(LocationSettingsResult.class);
 }

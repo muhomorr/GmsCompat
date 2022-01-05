@@ -19,5 +19,5 @@ package com.google.android.gms.location.internal;
 import org.microg.safeparcel.AutoSafeParcelable;
 
 public class ClientIdentity extends AutoSafeParcelable {
-    public static final Creator<ClientIdentity> CREATOR = new AutoCreator<ClientIdentity>(ClientIdentity.class);
+    public static final Creator<ClientIdentity> CREATOR = new AutoCreator<>(ClientIdentity.class);
 }
