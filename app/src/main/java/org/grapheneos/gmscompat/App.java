@@ -17,11 +17,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         ctx = getApplicationContext();
-        preferences = ctx
-            // to support running in Direct Boot mode
-            .createDeviceProtectedStorageContext()
-            .getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
-        enabledGservices = preferences.getInt(PREF_KEY_ENABLED_GSERVICES, -1);
+        if (!Application.getProcessName().endsWith(getString(R.string.persistent_process))) {
+            preferences = ctx
+                // to support running in Direct Boot mode
+                .createDeviceProtectedStorageContext()
+                .getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
+            enabledGservices = preferences.getInt(PREF_KEY_ENABLED_GSERVICES, -1);
+        }
     }
 
     public static boolean isGserviceEnabled(int id) {
@@ -36,5 +38,13 @@ public class App extends Application {
         preferences.edit().putInt(PREF_KEY_ENABLED_GSERVICES, enabledGservices).commit();
 
         ctx.sendBroadcast(new Intent(ctx, ResetGservices.class));
+    }
+
+    public interface NotificationChannels {
+        String PERSISTENT_FG_SERVICE = "persistent_fg_service";
+    }
+
+    public interface NotificationIds {
+        int PERSISTENT_FG_SERVICE = 1;
     }
 }
