@@ -3,6 +3,7 @@ package org.grapheneos.gmscompat;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -33,6 +34,8 @@ public class PersistentFgService extends Service {
         var nb = new Notification.Builder(this, App.NotificationChannels.PERSISTENT_FG_SERVICE);
         nb.setSmallIcon(android.R.drawable.ic_dialog_dialer);
         nb.setContentTitle(title);
+        nb.setContentIntent(PendingIntent.getActivity(this, 0,
+            new Intent(this, MainActivity.class), PendingIntent.FLAG_IMMUTABLE));
         nb.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE);
         startForeground(App.NotificationIds.PERSISTENT_FG_SERVICE, nb.build());
     }
