@@ -21,6 +21,7 @@ class MainActivity : Activity() {
         ll.setPadding(pad, pad, pad, pad)
 
         val sw = Switch(this)
+        sw.textSize = 18f
         sw.isChecked = App.isGserviceEnabled(GserviceBroker.ID_GoogleLocationManagerService)
         sw.setText(R.string.reroute_location_requests_to_os_apis)
         sw.setOnCheckedChangeListener { _, isChecked ->

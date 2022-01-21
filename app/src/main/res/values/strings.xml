@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GmsCompat</string>
+    <string name="app_name">Sandboxed Google Play</string>
     <string name="monitoring_location">Monitoring location</string>
     <string name="reroute_location_requests_to_os_apis">Reroute location requests to the OS APIs</string>
     <string name="missing_location_permission">Location permission needs to be set to \"%s\".</string>

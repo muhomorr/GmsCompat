@@ -37,8 +37,8 @@
             android:theme="@android:style/Theme.DeviceDefault.DayNight"
         >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="${applicationId}.SETTINGS_LINK" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
