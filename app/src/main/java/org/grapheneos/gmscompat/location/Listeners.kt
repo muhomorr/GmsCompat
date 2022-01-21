@@ -48,9 +48,6 @@ fun Listeners.update(client: Client, key: Any, listener: OsLocationListener) {
         } else {
             put(key, listener)
             logd{"client ${client.packageName} added listener $key, listenerCount $size"}
-            if (key is PendingIntent) {
-                client.gls.updatePendingIntentListenerCount(1)
-            }
         }
     }
 }
@@ -76,9 +73,6 @@ fun Listeners.remove(client: Client, key: Any) {
         removeAt(idx)
         logd{"client ${client.packageName} removed listener $key, listenerCount $size"}
 
-        if (key is PendingIntent) {
-            client.gls.updatePendingIntentListenerCount(-1)
-        }
         if (size == 0) {
             client.finishMonitorAppOp()
             gc = true

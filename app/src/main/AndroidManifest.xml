@@ -50,14 +50,6 @@
             tools:ignore="ExportedService"
         />
 
-        <service
-            android:name=".location.FgService"
-            android:exported="false"
-            android:directBootAware="true"
-            android:process=":gservices"
-            android:foregroundServiceType="location"
-        />
-
         <receiver
             android:name=".ResetGservices"
             android:exported="false"

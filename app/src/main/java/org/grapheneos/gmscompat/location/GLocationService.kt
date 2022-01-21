@@ -187,22 +187,6 @@ class GLocationService(val ctx: Context) : IGoogleLocationManagerService.Stub() 
         callback.onLocationSettingsResult(LocationSettingsResult(lss, Status.SUCCESS))
     }
 
-    private var numberOfPendingIntentListeners = 0
-
-    // delivering location to the app that isn't bound requires a foreground service
-    fun updatePendingIntentListenerCount(offset: Int) {
-        require(offset == -1 || offset == 1)
-        synchronized(this) {
-            numberOfPendingIntentListeners += offset
-            check(numberOfPendingIntentListeners >= 0)
-            if (numberOfPendingIntentListeners == 0) {
-                FgService.setState(false)
-            } else if (numberOfPendingIntentListeners == 1) {
-                FgService.setState(true)
-            }
-        }
-    }
-
     companion object {
         @JvmField
         val INSTANCE = GLocationService(App.ctx)
