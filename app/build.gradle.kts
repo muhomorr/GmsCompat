@@ -43,6 +43,7 @@ android {
 
 dependencies {
     implementation("androidx.annotation:annotation:1.3.0")
+    implementation("androidx.preference:preference:1.1.1")
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

@@ -13,15 +13,15 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import static org.grapheneos.gmscompat.Constants.PLAY_SERVICES_PKG;
+import static org.grapheneos.gmscompat.Constants.PLAY_STORE_PKG;
+
 // raises priority of Play Services and Play Store, thereby allowing them to start services when they need to
 public class PersistentFgService extends Service {
     private static final String TAG = "PersistentFgService";
 
     private static final int PLAY_SERVICES = 1;
     private static final int PLAY_STORE = 1 << 1;
-
-    private static final String PLAY_SERVICES_PKG = "com.google.android.gms";
-    private static final String PLAY_STORE_PKG = "com.android.vending";
 
     int boundPkgs;
 
