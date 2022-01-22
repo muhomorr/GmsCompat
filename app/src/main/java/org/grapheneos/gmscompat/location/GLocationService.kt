@@ -6,6 +6,7 @@ import android.app.AppOpsManager.MODE_ALLOWED
 import android.content.Context
 import android.location.Criteria
 import android.location.Location
+import android.location.LocationManager
 import android.location.provider.ProviderProperties
 import android.util.SparseArray
 import com.google.android.gms.common.api.Status
@@ -23,6 +24,7 @@ class GLocationService(val ctx: Context) : IGoogleLocationManagerService.Stub() 
     val appOpsManager = ctx.getSystemService(AppOpsManager::class.java)!!
     val packageManager = ctx.packageManager!!
     val listenerCallbacksExecutor = Executors.newCachedThreadPool()
+    val nonClientLocationManager = ctx.getSystemService(LocationManager::class.java)!!
 
     // maps app uid to its registered listeners
     // gc would be hard to do correctly if listeners were strongly referenced
@@ -177,10 +179,11 @@ class GLocationService(val ctx: Context) : IGoogleLocationManagerService.Stub() 
         packageName: String?
     ) {
         logd{settingsRequest}
-        val client = Client(this)
+        // GMS doesn't check whether caller has a location permission in this case
+
         val lss = LocationSettingsStates()
         lss.gpsPresent = true
-        lss.gpsUsable = client.locationManager.isLocationEnabled()
+        lss.gpsUsable = nonClientLocationManager.isLocationEnabled()
 //        lss.networkLocationPresent = true;
 //        lss.networkLocationUsable = lss.gpsUsable;
 

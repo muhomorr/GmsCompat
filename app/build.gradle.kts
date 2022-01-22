@@ -25,7 +25,6 @@ android {
             buildConfigField("boolean", "DEV", "false")
         }
         getByName("debug") {
-            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             // BuildConfig.DEBUG doesn't get inlined, which breaks dead code elimination
             buildConfigField("boolean", "DEV", "true")
