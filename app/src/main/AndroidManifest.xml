@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.START_FOREGROUND_SERVICES_FROM_BACKGROUND" />
 
     <application
         android:name=".App"
@@ -15,21 +16,20 @@
     >
         <service
             android:name=".PersistentFgService"
-            android:exported="true"
+            android:exported="false"
             android:directBootAware="true"
             android:process="@string/persistent_process"
-            android:permission="com.google.android.providers.gsf.permission.WRITE_GSERVICES"
         />
-        <!-- WRITE_GSERVICES is a signature-protected permission held by Play Services and Play Store -->
 
         <provider
-            android:name=".RpcProvider"
-            android:authorities="${applicationId}.RpcProvider"
+            android:name=".BinderProvider"
+            android:authorities="${applicationId}.BinderProvider"
             android:exported="true"
             android:directBootAware="true"
             android:process="@string/persistent_process"
             android:permission="com.google.android.providers.gsf.permission.WRITE_GSERVICES"
         />
+        <!-- WRITE_GSERVICES is a signature-protected permission held by GSF, Play Services and Play Store -->
 
         <activity
             android:name=".MainActivity"

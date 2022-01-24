@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
@@ -24,6 +25,14 @@ public class PersistentFgService extends Service {
     private static final int PLAY_STORE = 1 << 1;
 
     int boundPkgs;
+
+    static void maybeStart(Context ctx, String pkg) {
+        if (Constants.PLAY_SERVICES_PKG.equals(pkg) || Constants.PLAY_STORE_PKG.equals(pkg)) {
+            var i = new Intent(pkg);
+            i.setClass(ctx, PersistentFgService.class);
+            ctx.getApplicationContext().startForegroundService(i);
+        }
+    }
 
     public void onCreate() {
         var title = getString(R.string.persistent_fg_service_notif);
@@ -64,7 +73,6 @@ public class PersistentFgService extends Service {
                 throw new SecurityException("unathourized intent " + intent);
             }
         }
-        // important, grants permission to call startForeground() again in case process gets recreated
         return START_STICKY;
     }
 
