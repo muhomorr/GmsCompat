@@ -14,6 +14,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import static org.grapheneos.gmscompat.Constants.GSF_PKG;
 import static org.grapheneos.gmscompat.Constants.PLAY_SERVICES_PKG;
 import static org.grapheneos.gmscompat.Constants.PLAY_STORE_PKG;
 
@@ -26,12 +27,10 @@ public class PersistentFgService extends Service {
 
     int boundPkgs;
 
-    static void maybeStart(Context ctx, String pkg) {
-        if (Constants.PLAY_SERVICES_PKG.equals(pkg) || Constants.PLAY_STORE_PKG.equals(pkg)) {
-            var i = new Intent(pkg);
-            i.setClass(ctx, PersistentFgService.class);
-            ctx.getApplicationContext().startForegroundService(i);
-        }
+    static void start(Context ctx, String pkg) {
+        var i = new Intent(pkg);
+        i.setClass(ctx, PersistentFgService.class);
+        ctx.getApplicationContext().startForegroundService(i);
     }
 
     public void onCreate() {
@@ -51,26 +50,26 @@ public class PersistentFgService extends Service {
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent == null) {
-            Log.d(TAG, "received null intent, rechecking bound services");
+            Log.d(TAG, "received null intent, rebinding services");
             bindPlayServices();
             bindPlayStore();
-            if (boundPkgs == 0) {
-                Log.d(TAG, "no bound packages, calling stopSelf()");
-                stopSelf();
-            }
         } else {
             String pkg = intent.getAction();
+            boolean res;
             if (PLAY_SERVICES_PKG.equals(pkg)) {
-                if (!bindPlayServices()) {
-                    Log.w(TAG, "unable to bind to " + pkg);
-                }
+                res = bindPlayServices();
             } else if (PLAY_STORE_PKG.equals(pkg)) {
-                if (!bindPlayStore()) {
-                    Log.w(TAG, "unable to bind to " + pkg);
-                }
+                res = bindPlayStore();
+            } else if (GSF_PKG.equals(pkg)) {
+                // GSF doesn't need to be bound, but needs :persistent process to remain running to
+                // be able to use its exported binder
+                res = true;
             } else {
                 // this service is protected by the signature-level permission
                 throw new SecurityException("unathourized intent " + intent);
+            }
+            if (!res) {
+                Log.w(TAG, "unable to bind to " + pkg);
             }
         }
         return START_STICKY;
@@ -116,7 +115,6 @@ public class PersistentFgService extends Service {
 
         public void onServiceDisconnected(ComponentName name) {
             Log.d(TAG, "onServiceDisconnected " + name);
-            // docs promise that onServiceConnected will be called when the other app is restarted
         }
 
         public void onBindingDied(ComponentName name) {
@@ -124,11 +122,6 @@ public class PersistentFgService extends Service {
             // see the onBindingDied doc
             svc.unbindService(this);
             svc.boundPkgs &= ~pkgId;
-
-            if (svc.boundPkgs == 0) {
-                Log.d(TAG, "no bound pkgs, calling stopSelf()");
-                svc.stopSelf();
-            }
         }
 
         public void onNullBinding(ComponentName name) {
