@@ -44,11 +44,11 @@ fun Listeners.update(client: Client, key: Any, listener: OsLocationListener) {
         if (curIdx >= 0) {
             removeInternal(valueAt(curIdx))
             setValueAt(curIdx, listener)
-            logd{"client ${client.packageName} updated listener $key, listenerCount $size"}
         } else {
             put(key, listener)
-            logd{"client ${client.packageName} added listener $key, listenerCount $size"}
         }
+        logd{"client ${client.packageName} ${if (curIdx >= 0) "updated" else "added" } " +
+                "listener $key, ${listener.request} listenerCount $size"}
     }
 }
 
