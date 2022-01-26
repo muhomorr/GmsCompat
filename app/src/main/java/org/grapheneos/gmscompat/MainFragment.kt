@@ -6,7 +6,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
-import androidx.preference.*
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceScreen
+import androidx.preference.SwitchPreferenceCompat
 import org.grapheneos.gmscompat.Constants.PLAY_SERVICES_PKG
 import org.grapheneos.gmscompat.Constants.PLAY_STORE_PKG
 
@@ -46,7 +49,7 @@ class MainFragment : PreferenceFragmentCompat() {
                 if (msg != null) {
                     AlertDialog.Builder(ctx)
                         .setMessage(msg)
-                        .setPositiveButton(R.string.open_settings) { _, _, ->
+                        .setPositiveButton(R.string.open_settings) { _, _ ->
                             startActivity(appSettingsIntent(PLAY_SERVICES_PKG))
                         }
                         .show()

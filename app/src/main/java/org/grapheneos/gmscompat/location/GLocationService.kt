@@ -10,13 +10,23 @@ import android.location.LocationManager
 import android.location.provider.ProviderProperties
 import android.util.SparseArray
 import com.google.android.gms.common.api.Status
-import com.google.android.gms.location.*
-import com.google.android.gms.location.internal.*
+import com.google.android.gms.location.ILocationCallback
+import com.google.android.gms.location.ILocationListener
+import com.google.android.gms.location.LocationAvailability
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResult
+import com.google.android.gms.location.LocationSettingsStates
+import com.google.android.gms.location.internal.FusedLocationProviderResult
+import com.google.android.gms.location.internal.IFusedLocationProviderCallback
+import com.google.android.gms.location.internal.IGoogleLocationManagerService
+import com.google.android.gms.location.internal.ISettingsCallbacks
+import com.google.android.gms.location.internal.LocationRequestUpdateData
 import org.grapheneos.gmscompat.App
 import org.grapheneos.gmscompat.logd
 import org.grapheneos.gmscompat.opModeToString
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Arrays
 import java.util.concurrent.Executors
 
 @SuppressLint("MissingPermission")

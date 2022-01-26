@@ -10,8 +10,9 @@ import org.grapheneos.gmscompat.BuildConfig
 import org.grapheneos.gmscompat.logd
 import org.grapheneos.gmscompat.opModeToString
 import java.lang.IllegalStateException
-import java.util.*
+import java.util.Collections
 import java.util.concurrent.CountDownLatch
+import kotlin.math.max
 
 fun LocationRequest.toOsLocationRequest(): android.location.LocationRequest {
     val interval =
@@ -26,7 +27,7 @@ fun LocationRequest.toOsLocationRequest(): android.location.LocationRequest {
     if (explicitFastestInterval) {
         b.setMinUpdateIntervalMillis(fastestInterval)
     }
-    b.setDurationMillis(Math.max(1, expirationTime - SystemClock.elapsedRealtime()))
+    b.setDurationMillis(max(1, expirationTime - SystemClock.elapsedRealtime()))
     b.setMaxUpdates(numUpdates)
     b.setMinUpdateDistanceMeters(smallestDesplacement)
     b.setMaxUpdateDelayMillis(maxWaitTime)
