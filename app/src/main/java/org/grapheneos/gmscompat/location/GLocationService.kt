@@ -202,7 +202,7 @@ class GLocationService(val ctx: Context) : IGoogleLocationManagerService.Stub() 
 
     companion object {
         @JvmField
-        val INSTANCE = GLocationService(App.ctx)
+        val INSTANCE = GLocationService(App.ctx())
 
         @JvmField
         val CODES = intArrayOf(

@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 public class App extends Application {
-    public static Context ctx;
-    public static SharedPreferences preferences;
+    private static Context ctx;
+    private static SharedPreferences preferences;
 
     private static final String PREFS_FILE = "prefs";
     private static final String PREF_KEY_ENABLED_GSERVICES = "enabled_gservices";
@@ -38,6 +38,14 @@ public class App extends Application {
         preferences.edit().putInt(PREF_KEY_ENABLED_GSERVICES, enabledGservices).commit();
 
         ctx.sendBroadcast(new Intent(ctx, ResetGservices.class));
+    }
+
+    public static Context ctx() {
+        return ctx;
+    }
+
+    public static SharedPreferences preferences() {
+        return preferences;
     }
 
     public interface NotificationChannels {

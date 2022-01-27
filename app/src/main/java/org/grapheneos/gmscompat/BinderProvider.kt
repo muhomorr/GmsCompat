@@ -7,6 +7,8 @@ import android.os.IBinder
 import android.os.RemoteException
 import android.util.ArraySet
 
+private const val KEY_BINDER = "binder"
+
 class BinderProvider : AbsContentProvider() {
     override fun call(pkg: String, arg: String?, extras: Bundle?): Bundle? {
         logd{"callingPkg " + pkg + " callingPid " + Binder.getCallingPid()}
@@ -29,7 +31,6 @@ class BinderProvider : AbsContentProvider() {
     }
 
     companion object {
-        const val KEY_BINDER = "binder"
         private val dummyBinder = Binder()
         private val boundProcesses = ArraySet<IBinder>(10)
 
@@ -43,7 +44,7 @@ class BinderProvider : AbsContentProvider() {
             synchronized(boundProcesses) {
                 boundProcesses.remove(binder)
                 if (boundProcesses.size == 0) {
-                    val ctx = App.ctx
+                    val ctx = App.ctx()
                     val i = Intent(ctx, PersistentFgService::class.java)
                     if (ctx.stopService(i)) {
                         logd{"no bound processes, stopping PersistentFgService"}
