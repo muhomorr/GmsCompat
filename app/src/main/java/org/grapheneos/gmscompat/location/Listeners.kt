@@ -8,9 +8,12 @@ import android.util.ArrayMap
 import android.util.Log
 import org.grapheneos.gmscompat.logd
 import org.grapheneos.gmscompat.opModeToString
+import java.lang.IllegalStateException
 
 // all listeners registered by a given uid. key is either Binder or PendingIntent
 typealias Listeners = ArrayMap<Any, OsLocationListener>
+
+private val MAX_COUNT = 20
 
 fun Listeners.all(): List<OsLocationListener> {
     synchronized(this) {
@@ -46,6 +49,10 @@ fun Listeners.update(client: Client, key: Any, listener: OsLocationListener) {
             setValueAt(curIdx, listener)
         } else {
             put(key, listener)
+            if (size > MAX_COUNT) {
+                remove(client, key)
+                throw IllegalStateException("too many ($size) listeners are already registered")
+            }
         }
         logd{"client ${client.packageName} ${if (curIdx >= 0) "updated" else "added" } " +
                 "listener $key, ${listener.request} listenerCount $size"}
