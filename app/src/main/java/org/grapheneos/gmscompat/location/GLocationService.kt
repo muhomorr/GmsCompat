@@ -30,7 +30,8 @@ import java.util.Arrays
 import java.util.concurrent.Executors
 
 @SuppressLint("MissingPermission")
-class GLocationService(val ctx: Context) : IGoogleLocationManagerService.Stub() {
+object GLocationService : IGoogleLocationManagerService.Stub() {
+    val ctx = App.ctx()
     val appOpsManager = ctx.getSystemService(AppOpsManager::class.java)!!
     val packageManager = ctx.packageManager!!
     val listenerCallbacksExecutor = Executors.newCachedThreadPool()
@@ -200,22 +201,17 @@ class GLocationService(val ctx: Context) : IGoogleLocationManagerService.Stub() 
         callback.onLocationSettingsResult(LocationSettingsResult(lss, Status.SUCCESS))
     }
 
-    companion object {
-        @JvmField
-        val INSTANCE = GLocationService(App.ctx())
-
-        @JvmField
-        val CODES = intArrayOf(
-            FIRST_CALL_TRANSACTION + 58, // updateLocationRequest
-            FIRST_CALL_TRANSACTION + 66, // flushLocations
-            FIRST_CALL_TRANSACTION + 6,  // getLastLocation
-            FIRST_CALL_TRANSACTION + 20, // getLastLocation2
-            FIRST_CALL_TRANSACTION + 79, // getLastLocation3
-            FIRST_CALL_TRANSACTION + 33, // getLocationAvailability
-            FIRST_CALL_TRANSACTION + 62, // requestLocationSettingsDialog
-        )
-        init {
-            Arrays.sort(CODES)
-        }
+    @JvmField
+    val CODES = intArrayOf(
+        FIRST_CALL_TRANSACTION + 58, // updateLocationRequest
+        FIRST_CALL_TRANSACTION + 66, // flushLocations
+        FIRST_CALL_TRANSACTION + 6,  // getLastLocation
+        FIRST_CALL_TRANSACTION + 20, // getLastLocation2
+        FIRST_CALL_TRANSACTION + 79, // getLastLocation3
+        FIRST_CALL_TRANSACTION + 33, // getLocationAvailability
+        FIRST_CALL_TRANSACTION + 62, // requestLocationSettingsDialog
+    )
+    init {
+        Arrays.sort(CODES)
     }
 }
