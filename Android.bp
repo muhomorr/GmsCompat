@@ -1,0 +1,26 @@
+android_app {
+    name: "GmsCompat",
+    srcs: [
+        "app/src/main/java/**/*.kt",
+        "app/src/main/java/**/*.java",
+    ],
+    resource_dirs: [
+        "app/src/main/res",
+    ],
+    static_libs: [
+        "androidx.preference_preference",
+    ],
+    manifest: "app/src/main/AndroidManifest.xml",
+
+    privileged: true,
+    required: [
+        "permissions_org.grapheneos.gmscompat.xml",
+    ]
+}
+
+prebuilt_etc {
+    name: "permissions_org.grapheneos.gmscompat.xml",
+    sub_dir: "permissions",
+    src: "permissions_org.grapheneos.gmscompat.xml",
+    filename_from_src: true,
+}
